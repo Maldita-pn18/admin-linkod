@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import { Redirect } from "react-router-dom";
 
 
 
@@ -17,7 +18,8 @@ export default class DateLocation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      toViewAll:false,
+      toUpdateBooking: false,
     }
   }
 
@@ -25,8 +27,12 @@ export default class DateLocation extends Component {
 
   }
   render() {
-
-
+    if(this.state.toViewAll){
+      return <Redirect to={{ pathname: "/admin/Viewall" }} />;
+    }
+    if (this.state.toUpdateBooking){
+      return <Redirect to={{ pathname: "/admin/UpdateBooking" }} />;
+    }
     return (
       <div>
         {this.datelocation()}
@@ -70,27 +76,27 @@ export default class DateLocation extends Component {
                           component="button"
                           variant="body2"
                           onClick={() => {
-                            console.info("I'm a button.");
+                            this.setState({toViewAll:true})
                           }}
                         >(view all)</Link>
                         <hr ></hr>
-                        
+
                       </Typography>
                       <Grid>
-                      <p>
-                        22-02-2017 09:16
-                      </p>
-                      <p style={{marginTop:'1%'}}><Link
-                        component="button"
-                        variant="body2"
-                        onClick={() => {
-                          console.info("I'm a button.");
-                        }}
-                      >Mary Grace Cordoto</Link></p>
-                      <p>66332233</p>
-                      <p>Atlanta - Cincinnati, 13:00 - 20:55</p>
-                      <p>at 23-02-2017</p>
-                      <p>from Atlanta to Charlotte</p>
+                        <p>
+                          22-02-2017 09:16
+                        </p>
+                        <p style={{ marginTop: '1%' }}><Link
+                          component="button"
+                          variant="body2"
+                          onClick={() => {
+                            this.setState({toUpdateBooking:true})
+                          }}
+                        >Mary Grace Cordoto</Link></p>
+                        <p>66332233</p>
+                        <p>Atlanta - Cincinnati, 13:00 - 20:55</p>
+                        <p>at 23-02-2017</p>
+                        <p>from Atlanta to Charlotte</p>
                       </Grid>
                     </CardContent>
                   </Card>

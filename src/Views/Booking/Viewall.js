@@ -19,7 +19,30 @@ export default class DateLocation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            columns: [
+                { title: 'Client', field: 'client' },
+                { title: 'Date', field: 'date' },
+                { title: 'Time', field: 'time' },
+                { title: 'From',field: 'from'},
+                { title: 'To', field: 'to' },
+                { title: 'Bus', field: 'bus' },
+                { title: 'Seat/s', field: 'seat' },
+                { title: 'Bill', field: 'bill' },
+                { title: 'Ticket', field: 'ticket' }
+            ],
+            data: [
+                {
+                    client: 'testing@gmail.com',
+                    date: '11/26/2019',
+                    time: "10:50:25 am",
+                    from: 'Talamban',
+                    to: 'colon',
+                    bus: 'Ceres Liner',
+                    seat:JSON.stringify([1,2,3]),
+                    bill: '100',
+                    ticket: 'BFL-9-1072-ZAW'
+                }
+            ],
         }
     }
 
@@ -27,37 +50,14 @@ export default class DateLocation extends Component {
 
     }
     render() {
-
-
         return (
             <div>
-                {this.datelocation()}
+                {this.view()}
             </div>
         )
     }
 
-    datelocation() {
-        const [state, setState] = React.useState({
-            columns: [
-              { title: 'Name', field: 'name' },
-              { title: 'Surname', field: 'surname' },
-              { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-              {
-                title: 'Birth Place',
-                field: 'birthCity',
-                lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-              },
-            ],
-            data: [
-              { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-              {
-                name: 'Zerya Betül',
-                surname: 'Baran',
-                birthYear: 2017,
-                birthCity: 34,
-              },
-            ],
-          });
+    view() {
         const classes = makeStyles(theme => ({
             root: {
                 flexGrow: 1,
@@ -68,10 +68,6 @@ export default class DateLocation extends Component {
                 textAlign: 'center',
                 color: theme.palette.text.secondary
             },
-            formControl: {
-                margin: theme.spacing(1),
-                minWidth: 120,
-            },
             selectEmpty: {
                 marginTop: theme.spacing(2),
             },
@@ -81,29 +77,28 @@ export default class DateLocation extends Component {
             <div className={classes.root}>
                 <Header />
                 <Grid container spacing={3} justify="center" style={{ marginTop: '3%' }}>
-                    <Grid item xs={8} >
+                    <Grid item xs={10} >
                         <Paper className={classes.paper} >
                             <Grid container justify='space-around' style={{ height: '10%', marginTop: '1%' }}>
-                                <Grid style={{ width: '98%' }}>
-                                    <Card className={classes.card} style={{ maxHeight: '300px', marginTop: '1%' }}>
+                                <Grid style={{ width: '100%' }}>
+                                    <Card style={{ maxHeight: '300px'}}>
                                         <CardContent style={{ backgroundColor: '#1976d2' }}>
-                                            <p container justify='space-around' style={{ textAlign: 'justify' }}> <InfoIcon />  <b>Manage Bookings <br ></br></b>
-                                                Below is a list of all ticket bookings made. By default the new bookings stay on top. You will find some brief data about each booking and you can view details and/or edit booking by clicking on the Edit button at the end of each booking row. You can filter booking by their status. You can also search bookings using the search bar or the advanced search (click on the arrow button next to search bar.</p>
+                                            <p style={{ textAlign: 'justify' }}><InfoIcon /><b>Manage Bookings <br ></br></b>
+                                            </p>
                                         </CardContent>
                                     </Card>
                                 </Grid>
                             </Grid>
                             <Grid>
                                 <MaterialTable
-                                    title="Editable Example"
-                                    columns={state.columns}
-                                    data={state.data}
+                                    columns={this.state.columns}
+                                    data={this.state.data}
                                     editable={{
                                         onRowAdd: newData =>
                                             new Promise(resolve => {
                                                 setTimeout(() => {
                                                     resolve();
-                                                    setState(prevState => {
+                                                    this.setState(prevState => {
                                                         const data = [...prevState.data];
                                                         data.push(newData);
                                                         return { ...prevState, data };
@@ -115,7 +110,7 @@ export default class DateLocation extends Component {
                                                 setTimeout(() => {
                                                     resolve();
                                                     if (oldData) {
-                                                        setState(prevState => {
+                                                        this.setState(prevState => {
                                                             const data = [...prevState.data];
                                                             data[data.indexOf(oldData)] = newData;
                                                             return { ...prevState, data };
@@ -127,7 +122,7 @@ export default class DateLocation extends Component {
                                             new Promise(resolve => {
                                                 setTimeout(() => {
                                                     resolve();
-                                                    setState(prevState => {
+                                                    this.setState(prevState => {
                                                         const data = [...prevState.data];
                                                         data.splice(data.indexOf(oldData), 1);
                                                         return { ...prevState, data };
@@ -137,18 +132,6 @@ export default class DateLocation extends Component {
                                     }}
                                 />
                             </Grid>
-                            <br></br>
-                            <br></br>
-                            <hr style={{ margin: '2%' }}></hr>
-                            <Card>
-                                <CardActions>
-                                    <Grid container justify='flex-end'>
-                                        <Button variant="outlined" color="primary">
-                                            + Add booking
-                                             </Button>
-                                    </Grid>
-                                </CardActions>
-                            </Card>
                         </Paper>
                     </Grid>
                 </Grid>
