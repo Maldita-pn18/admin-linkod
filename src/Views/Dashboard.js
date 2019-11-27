@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Header from '../../Components/Header';
+import Header from '../Components/Header';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
 import CardActions from '@material-ui/core/CardActions';
@@ -30,9 +30,9 @@ export default class DateLocation extends Component {
     if(this.state.toViewAll){
       return <Redirect to={{ pathname: "/admin/Viewall" }} />;
     }
-    if (this.state.toUpdateBooking){
-      return <Redirect to={{ pathname: "/admin/UpdateBooking" }} />;
-    }
+    // if (this.state.toUpdateBooking){
+    //   return <Redirect to={{ pathname: "/admin/UpdateBooking" }} />;
+    // }
     return (
       <div>
         {this.datelocation()}
@@ -64,10 +64,10 @@ export default class DateLocation extends Component {
     return (
       <div className={classes.root}>
         <Header />
-        <Grid container spacing={3} justify="center" style={{ marginTop: '3%' }}>
+        <Grid container spacing={3} justify="center" style={{ marginTop: '3%', height: '100%', }}>
           <Grid item xs={8} >
             <Paper className={classes.paper} >
-              <Grid container justify='space-around' style={{ height: '10%', marginTop: '1%' }}>
+              <Grid container justify='space-around' style={{ height: '70%', marginTop: '1%' }}>
                 <Grid style={{ width: '98%' }}>
                   <Card className={classes.card} style={{ maxHeight: '300px', marginTop: '1%' }}>
                     <CardContent>
@@ -90,7 +90,7 @@ export default class DateLocation extends Component {
                           component="button"
                           variant="body2"
                           onClick={() => {
-                            this.setState({toUpdateBooking:true})
+                            // this.setState({toUpdateBooking:true})
                           }}
                         >Mary Grace Cordoto</Link></p>
                         <p>66332233</p>
@@ -102,21 +102,10 @@ export default class DateLocation extends Component {
                   </Card>
                 </Grid>
               </Grid>
+              {/* <br></br>
               <br></br>
-              <br></br>
-              <hr style={{ margin: '2%' }}></hr>
-              <Card>
-                <CardActions>
-                  <Grid container justify='flex-end'>
-                    <Button size="small" color="primary" type="submit" onClick={this.checkInformation} >Preview & Confirm</Button>
-                    <Grid container justify='flex-end'>
-                      <Button size="small" color="primary">
-                        Back
-                                    </Button>
-                    </Grid>
-                  </Grid>
-                </CardActions>
-              </Card>
+              <hr style={{ margin: '2%' }}></hr> */}
+
             </Paper>
           </Grid>
         </Grid>

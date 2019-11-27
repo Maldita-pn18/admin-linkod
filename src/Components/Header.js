@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -18,9 +18,110 @@ import AirportShuttleIcon from '@material-ui/icons/AirportShuttle';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import Grid from '@material-ui/core/Grid';
 import RoomIcon from '@material-ui/icons/Room';
-import Dashboard from '../Views/Dashboard/Dashboard';
+import Dashboard from '../Views/Dashboard';
 import Link from '@material-ui/core/Link';
+import Viewall from '../Views/Viewall';
+import { browserHistory, Router, Route, IndexRoute } from 'react-router';
+import { Redirect } from "react-router-dom";
 
+
+export default class DateLocation extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: "",
+      toViewAll:false,
+      toBuses:"",
+      toBookings:false
+    }
+  }
+
+  TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+      <Typography
+        component="div"
+        role="tabpanel"
+        hidden={value !== index}
+        id={`scrollable-auto-tabpanel-${index}`}
+        aria-labelledby={`scrollable-auto-tab-${index}`}
+        {...other}
+      >
+        <Box p={3}>{children}</Box>
+      </Typography>
+    );
+  }
+
+  a11yProps(index) {
+    return {
+      id: `scrollable-auto-tab-${index}`,
+      'aria-controls': `scrollable-auto-tabpanel-${index}`,
+    };
+  }
+
+  render() {
+    return (
+      <div>
+        {this.navigations()}
+      </div>
+    )
+  }
+
+  navigations() {
+    TabPanel.propTypes = {
+      children: PropTypes.node,
+      index: PropTypes.any.isRequired,
+      value: PropTypes.any.isRequired,
+    };
+    const classes = makeStyles(theme => ({
+      root: {
+        flexGrow: 1,
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
+      },
+    }));
+    const handleChange = (event, newValue) => {
+      this.setState({ value: newValue });
+    };
+
+    const handleTabClick = (name) => {
+      // if(name === "viewAll"){
+      //   this.setState({toViewAll:true});
+      // }else if(name === "buses"){
+      //   this.setState({toBuses:true});
+      // }
+    }
+    return (
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography className={classes.title} variant="h6" component="h6" noWrap>
+              LINKOD
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Grid container justify='center'>
+          <AppBar position="static" color="default">
+            <Tabs
+              value={this.state.value}
+              onChange={handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+              variant="scrollable"
+              scrollButtons="auto"
+              aria-label="scrollable auto tabs example">
+              <Tab label="Dashboard" style={{ marginLeft: '30%' }} icon={<DashboardRoundedIcon />} {...a11yProps(0)} />
+              <Tab label="Schedule" icon={<ScheduleIcon />} {...a11yProps(1)} />
+              <Tab label="Bookings" icon={<NoteAddIcon />}{...a11yProps(2)} />
+              <Tab label="Buses" style={{ marginRight: '30%' }} icon={<DirectionsBusIcon />} {...a11yProps(3)} />
+            </Tabs>
+          </AppBar>
+        </Grid>
+      </div>
+    );
+  }
+}
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -53,86 +154,49 @@ function a11yProps(index) {
 }
 
 
-const useStyles = makeStyles(theme => ({
-  // text: {
-  //   padding: theme.spacing(2, 2, 0),
-  // },
-  // paper: {
-  //   paddingBottom: 50,
-  // },
-  // list: {
-  //   marginBottom: theme.spacing(2),
-  // },
-  // subheader: {
-  //   backgroundColor: theme.palette.background.paper,
-  // },
-  // grow: {
-  //   flexGrow: 1,
-  // },
-  // fabButton: {
-  //   position: 'absolute',
-  //   zIndex: 1,
-  //   top: -30,
-  //   left: 0,
-  //   right: 0,
-  //   margin: '0 auto',
-  // },
-  root: {
-    flexGrow: 1,
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
-  },
-
-  // title: {
-  //   flexGrow: 1,
-  //   display: 'none',
-  //   [theme.breakpoints.up('sm')]: {
-  //     display: 'block',
-  //   },
-  // },
 
 
-
-}));
-
-
-export default function SearchAppBar() {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+// export default function SearchAppBar() {
+//   const classes = useStyles();
+//   const [value, setValue] = React.useState(0);
 
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography className={classes.title} variant="h6" component="h6" noWrap>
-            LINKOD
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Grid container justify='center'>
-        <AppBar position="static" color="default">
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="scrollable"
-            scrollButtons="auto"
-            aria-label="scrollable auto tabs example">
-            <Tab label="Dashboard" style= {{marginLeft: '9%'}} component={Link} to="/admin/Dashboard"  icon={<DashboardRoundedIcon/>} {...a11yProps(0)} />
-            <Tab label="Schedule" icon={<ScheduleIcon />} {...a11yProps(1)} />
-            <Tab label="Bookings" icon={<NoteAddIcon />}{...a11yProps(2)} />
-            <Tab label="Buses" icon={<DirectionsBusIcon />} {...a11yProps(3)} />
-            <Tab label="Routes" icon={<RoomIcon />} {...a11yProps(4)} />
-            <Tab label="Bus Types" icon={<AirportShuttleIcon />} {...a11yProps(5)} />
-            <Tab label="Logout" icon={<ExitToAppIcon />} {...a11yProps(10)} />
-          </Tabs>
-        </AppBar>
-      </Grid>
-    </div>
-  );
-}
+//   const handleChange = (event, newValue) => {
+//     setValue(newValue);
+//   };
+//   const handleTabClick = () => {
+//     alert('testing')
+//     // this.props.history.push("/admin/Viewall")
+//     // browserHistory.push('/admin/Viewall')
+//     // this.props.history.push(`/${key}`)   // < == router router v4
+//     this.BrowserRouter.push(`/${"/admin/Viewall"}`);      // <== react router v3
+//   }
+//   return (
+//     <div className={classes.root}>
+//       <AppBar position="static">
+//         <Toolbar>
+//           <Typography className={classes.title} variant="h6" component="h6" noWrap>
+//             LINKOD
+//           </Typography>
+//         </Toolbar>
+//       </AppBar>
+//       <Grid container justify='center'>
+//         <AppBar position="static" color="default">
+//           <Tabs
+//             value={value}
+//             onChange={handleChange}
+//             indicatorColor="primary"
+//             textColor="primary"
+//             variant="scrollable"
+//             scrollButtons="auto"
+//             aria-label="scrollable auto tabs example">
+//             <Tab label="Dashboard" style={{ marginLeft: '30%' }} component={Link} to="/admin/Dashboard" icon={<DashboardRoundedIcon />} {...a11yProps(0)} />
+//             <Tab label="Schedule" icon={<ScheduleIcon />} {...a11yProps(1)} />
+//             <Tab label="Bookings" onClick={handleTabClick} icon={<NoteAddIcon />}{...a11yProps(2)} />
+//             <Tab label="Buses" style={{ marginRight: '30%' }} icon={<DirectionsBusIcon />} {...a11yProps(3)} />
+//           </Tabs>
+//         </AppBar>
+//       </Grid>
+//     </div>
+//   );
+// }

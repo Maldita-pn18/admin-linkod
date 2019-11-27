@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Header from '../../Components/Header';
+import Header from '../Components/Header';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
 import CardActions from '@material-ui/core/CardActions';
@@ -83,14 +83,54 @@ export default class DateLocation extends Component {
                                 <Grid style={{ width: '100%' }}>
                                     <Card style={{ maxHeight: '300px'}}>
                                         <CardContent style={{ backgroundColor: '#1976d2' }}>
-                                            <p style={{ textAlign: 'justify' }}><InfoIcon /><b>Update Bookings <br ></br></b>
+                                            <p style={{ textAlign: 'justify' }}><InfoIcon /><b>Manage Bookings <br ></br></b>
                                             </p>
                                         </CardContent>
                                     </Card>
                                 </Grid>
                             </Grid>
                             <Grid>
-                               
+                                <MaterialTable
+                                    columns={this.state.columns}
+                                    data={this.state.data}
+                                    editable={{
+                                        onRowAdd: newData =>
+                                            new Promise(resolve => {
+                                                setTimeout(() => {
+                                                    resolve();
+                                                    this.setState(prevState => {
+                                                        const data = [...prevState.data];
+                                                        data.push(newData);
+                                                        return { ...prevState, data };
+                                                    });
+                                                }, 600);
+                                            }),
+                                        onRowUpdate: (newData, oldData) =>
+                                            new Promise(resolve => {
+                                                setTimeout(() => {
+                                                    resolve();
+                                                    if (oldData) {
+                                                        this.setState(prevState => {
+                                                            const data = [...prevState.data];
+                                                            data[data.indexOf(oldData)] = newData;
+                                                            return { ...prevState, data };
+                                                        });
+                                                    }
+                                                }, 600);
+                                            }),
+                                        onRowDelete: oldData =>
+                                            new Promise(resolve => {
+                                                setTimeout(() => {
+                                                    resolve();
+                                                    this.setState(prevState => {
+                                                        const data = [...prevState.data];
+                                                        data.splice(data.indexOf(oldData), 1);
+                                                        return { ...prevState, data };
+                                                    });
+                                                }, 600);
+                                            }),
+                                    }}
+                                />
                             </Grid>
                         </Paper>
                     </Grid>

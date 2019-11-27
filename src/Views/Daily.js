@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import Header from '../../Components/Header';
+import Header from '../Components/Header';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -14,34 +12,44 @@ import MaterialTable from 'material-table';
 
 
 
+
+
 export default class DateLocation extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             columns: [
-                { title: 'Client', field: 'client' },
-                { title: 'Date', field: 'date' },
-                { title: 'Time', field: 'time' },
-                { title: 'From',field: 'from'},
-                { title: 'To', field: 'to' },
-                { title: 'Bus', field: 'bus' },
-                { title: 'Seat/s', field: 'seat' },
-                { title: 'Bill', field: 'bill' },
-                { title: 'Ticket', field: 'ticket' }
+                { title: 'Bus Name', field: 'busName' },
+                { title: 'Seats', field: 'bus.seats.one' },
+                { title: 'Bus Number', field: 'bus.busNumber' },
+                { title: 'Starting Point', field: 'bus.routes.start' },
+                { title: 'Destination', field: 'bus.routes.end' },
+                { title: 'Start Time', field: 'startTime' },
+                { title: 'End Time', field: 'endTime' },
+                { title: 'Duration', field: 'duration' },
+                { title: 'Child', field: 'fare.child' },
+                { title: 'Adult', field: 'fare.adult' },
             ],
             data: [
                 {
-                    client: 'testing@gmail.com',
-                    date: '11/26/2019',
-                    time: "10:50:25 am",
-                    from: 'Talamban',
-                    to: 'colon',
-                    bus: 'Ceres Liner',
-                    seat:JSON.stringify([1,2,3]),
-                    bill: '100',
-                    ticket: 'BFL-9-1072-ZAW'
-                }
+                    "busName": "Ceres",
+                    "bus": {
+                        "seats": { "one": "true" },
+                        "busNumber": "00791",
+                        "routes": {
+                            "start": "Danao",
+                            "end": "Cebu",
+                        }
+                    },
+                    "startTime": " 12:2:24 pm",
+                    "endTime": " 12:2:24 am",
+                    "duration": "1",
+                    "fare": {
+                        "child": "50",
+                        "adult": "100"
+                    }
+                },
             ],
         }
     }
@@ -58,6 +66,8 @@ export default class DateLocation extends Component {
     }
 
     view() {
+
+
         const classes = makeStyles(theme => ({
             root: {
                 flexGrow: 1,
@@ -71,6 +81,9 @@ export default class DateLocation extends Component {
             selectEmpty: {
                 marginTop: theme.spacing(2),
             },
+            // table: {
+            //     minWidth: 700,
+            // },
         }));
 
         return (
@@ -81,9 +94,9 @@ export default class DateLocation extends Component {
                         <Paper className={classes.paper} >
                             <Grid container justify='space-around' style={{ height: '10%', marginTop: '1%' }}>
                                 <Grid style={{ width: '100%' }}>
-                                    <Card style={{ maxHeight: '300px'}}>
+                                    <Card style={{ maxHeight: '300px' }}>
                                         <CardContent style={{ backgroundColor: '#1976d2' }}>
-                                            <p style={{ textAlign: 'justify' }}><InfoIcon /><b>Manage Bookings <br ></br></b>
+                                            <p style={{ textAlign: 'justify' }}><InfoIcon /><b>Buses Schedule<br ></br></b>
                                             </p>
                                         </CardContent>
                                     </Card>
