@@ -19,10 +19,27 @@ export default class Login extends Component {
     this.state = {
       username: "",
       password: "",
+      usernameReqText: "",
+      passwordReqText: "",
+      usernameReqError: false,
+      passwordReqError: false,
     }
   }
   checkCredintial = () => {
+    if (this.state.username === "") {
+      this.setState({ usernameReqText: "Required!", usernameReqError: true })
+    }
+    if (this.state.password === "") {
+      this.setState({ passwordReqText: "Required!", passwordReqError: true })
+    } else {
 
+    }
+  }
+  username = (event) => {
+    this.setState({ username: event.target.value })
+  }
+  password = (event) => {
+    this.setState({password:event.target.value})
   }
   render() {
     // if (this.state.toCheckout) {
@@ -56,78 +73,84 @@ export default class Login extends Component {
       },
       root: {
         flexGrow: 1,
-    },
-    paper: {
+      },
+      paper: {
         height: 100,
         padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.secondary
-    },
-    bigAvatar: {
-      width: 60,
-      height: 60,
-    },
+      },
+      bigAvatar: {
+        width: 60,
+        height: 60,
+      },
     }));
 
     return (
       <Grid container spacing={3} justify="center" style={{ marginTop: '10%' }}>
-        <Grid item xs={5} >
-          <Paper className={classes.paper} >
-            <Grid container justify='space-around' style={{ height: '50%', marginTop: '8%' }}>
-              <Grid style={{ width: '100%' }}>
-                <Card style={{ height: '400px' }}>
-                  <CardContent >
-                    <CssBaseline />
-                    <div className={classes.paper}>
-                      <center>  <LockOutlinedIcon />
-                        <Avatar alt="Remy Sharp" src="https://cdn1.vectorstock.com/i/1000x1000/11/10/admin-icon-male-person-profile-avatar-with-gear-vector-25811110.jpg" className={classes.bigAvatar} />
-                      <Typography component="h1" variant="h5">
-                        Admin
+        {/* <Grid item xs={12} > */}
+        {/* <Paper className={classes.paper} > */}
+        {/* <Grid container justify='space-around' style={{ height: '50%', marginTop: '8%' }}> */}
+        <Grid>
+          <Card style={{ height: '500px', width: '400px' }}>
+            <CardContent >
+              <CssBaseline />
+              {/* <div className={classes.paper}> */}
+              <center>
+                <Avatar style={{ height: '120px', width: '130px' }} alt="Remy Sharp" src="https://cdn1.vectorstock.com/i/1000x1000/11/10/admin-icon-male-person-profile-avatar-with-gear-vector-25811110.jpg" className={classes.bigAvatar} />
+                <Typography component="h4" variant="h4">
+                  Admin
                       </Typography></center>
-                      <Typography backgroundColor="pink" ></Typography>
-                      <form className={classes.form} noValidate>
-                        <TextField
-                          variant="outlined"
-                          margin="normal"
-                          required
-                          fullWidth
-                          id="username"
-                          label="Username"
-                          name="username"
-                          autoComplete="username"
-                          autoFocus
-                        />
-                        <TextField
-                          variant="outlined"
-                          margin="normal"
-                          required
-                          fullWidth
-                          name="password"
-                          label="Password"
-                          type="password"
-                          id="password"
-                          autoComplete="current-password"
-                        />
-
-                        <Button
-                          type="submit"
-                          fullWidth
-                          variant="contained"
-                          color="primary"
-                          className={classes.submit}
-                        >
-                          Login
+              <Typography></Typography>
+              <form className={classes.form} noValidate>
+                <TextField
+                  error={this.state.usernameReqError}
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  helperText={this.state.usernameReqText}
+                  onChange={this.username}
+                  autoComplete="username"
+                  autoFocus
+                />
+                <TextField
+                  error={this.state.passwordReqError}
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  helperText={this.state.passwordReqText}
+                  autoComplete="current-password"
+                />
+                <Button
+                  // type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  style={{ marginTop: "50px" }}
+                  className={classes.submit}
+                  onClick={this.checkCredintial}
+                >
+                  Login
                     </Button>
-                      </form>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
-          </Paper>
+              </form>
+              {/* </div> */}
+            </CardContent>
+          </Card>
         </Grid>
-        </Grid>
+        {/* </Grid> */}
+        {/* </Paper> */}
+        {/* </Grid> */}
+      </Grid>
 
-        );
-      }
+    );
+  }
 }
