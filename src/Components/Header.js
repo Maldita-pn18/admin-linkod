@@ -10,19 +10,17 @@ import PropTypes from 'prop-types';
 import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import DirectionsBusIcon from '@material-ui/icons/DirectionsBus';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import SettingsIcon from '@material-ui/icons/Settings';
-import ReportIcon from '@material-ui/icons/Report';
-import PeopleIcon from '@material-ui/icons/People';
-import AirportShuttleIcon from '@material-ui/icons/AirportShuttle';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import Grid from '@material-ui/core/Grid';
 import RoomIcon from '@material-ui/icons/Room';
 import Dashboard from '../Views/Dashboard';
 import Link from '@material-ui/core/Link';
 import Viewall from '../Views/Viewall';
-import { browserHistory, Router, Route, IndexRoute } from 'react-router';
-import { Redirect } from "react-router-dom";
+import Schedule from '../Views/Schedule';
+import Daily from '../Views/Daily';
+// function TabPanel(props){
+//   const{children,value,index, ...other} = props;
+
 
 
 export default class DateLocation extends Component {
@@ -36,9 +34,9 @@ export default class DateLocation extends Component {
     }
   }
 
-  TabPanel(props) {
+  TabPanel =(props) =>{
     const { children, value, index, ...other } = props;
-
+  
     return (
       <Typography
         component="div"
@@ -111,13 +109,34 @@ export default class DateLocation extends Component {
               variant="scrollable"
               scrollButtons="auto"
               aria-label="scrollable auto tabs example">
-              <Tab label="Dashboard" style={{ marginLeft: '30%' }} icon={<DashboardRoundedIcon />} {...a11yProps(0)} />
-              <Tab label="Schedule" icon={<ScheduleIcon />} {...a11yProps(1)} />
-              <Tab label="Bookings" icon={<NoteAddIcon />}{...a11yProps(2)} />
-              <Tab label="Buses" style={{ marginRight: '30%' }} icon={<DirectionsBusIcon />} {...a11yProps(3)} />
+              <Tab label="Dashboard" style={{ marginLeft: '30%' }} icon={<DashboardRoundedIcon />} {...a11yProps(0)} /> {/*Dashboard.js*/}
+              <Tab label="Schedule" icon={<ScheduleIcon />} {...a11yProps(1)} /> {/*Schedule.js*/}
+              <Tab label="Bookings" icon={<NoteAddIcon />}{...a11yProps(2)} /> {/*ViewAll.js*/}
+              <Tab label="Buses" style={{ marginRight: '30%' }} icon={<DirectionsBusIcon />} {...a11yProps(3)} /> {/*Daily.js*/}
             </Tabs>
           </AppBar>
         </Grid>
+        <TabPanel value={value} index={0}>
+          <div>
+            <Dashboard/>
+          </div>
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <div>
+            <Schedule/>
+          </div>
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <div>
+          <Viewall/>
+          </div>
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          <div>
+          <Daily/>
+          </div>
+        </TabPanel>
+ 
       </div>
     );
   }
