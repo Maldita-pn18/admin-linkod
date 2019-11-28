@@ -30,9 +30,9 @@ export default class DateLocation extends Component {
     if(this.state.toViewAll){
       return <Redirect to={{ pathname: "/admin/Viewall" }} />;
     }
-    // if (this.state.toUpdateBooking){
-    //   return <Redirect to={{ pathname: "/admin/UpdateBooking" }} />;
-    // }
+    if (this.state.toUpdateBooking){
+      return <Redirect to={{ pathname: "/admin/Info" }} />;
+    }
     return (
       <div>
         {this.datelocation()}
@@ -90,7 +90,7 @@ export default class DateLocation extends Component {
                           component="button"
                           variant="body2"
                           onClick={() => {
-                            // this.setState({toUpdateBooking:true})
+                            this.setState({toUpdateBooking:true})
                           }}
                         >Mary Grace Cordoto</Link></p>
                         <p>66332233</p>

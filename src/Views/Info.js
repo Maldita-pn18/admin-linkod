@@ -10,7 +10,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import InfoIcon from '@material-ui/icons/Info';
-import MaterialTable from 'material-table';
 import TextField from '@material-ui/core/TextField';
 
 
@@ -64,14 +63,14 @@ export default class DateLocation extends Component {
                 <Grid container spacing={3} justify="center" style={{ marginTop: '3%' }}>
                     <Grid item xs={8} >
                         <Paper className={classes.paper} >
-                            <Grid container justify='space-around' style={{ height: '10%', marginTop: '1%' }}>
-                                <Grid style={{ width: '98%' }}>
-                                    <Card className={classes.card} style={{ maxHeight: '300px', marginTop: '1%' }}>
-                                        <CardContent style={{ backgroundColor: '#1976d2' }}>
-                                            <p container justify='space-around' style={{ textAlign: 'justify' }}> <InfoIcon />  <b> Update booking <br ></br></b>
+                            <Grid style={{ height: '10%', marginTop: '1%' }}>
+                                <Grid style={{ width: '100%' }}>
+                                    <Card  className={classes.card} style={{ maxHeight: '100%'}}>
+                                        <CardContent style={{ textAlign: 'justify', backgroundColor: '#1976d2' }}>
+                                            <p container justify='space-around' > <InfoIcon />  <b> Update booking <br ></br></b>
                                                 Use the from below to update the selected booking. Note that booking details and client details are separated into two tabs. Using the links in the right column of Booking details tab you can send new booking confirmation email to your clients or print booking tickets. You can use the "Resend confirmation" option if you have manually added the booking or have updated it and you wish to notify the customer about this.</p>
-
-                                            <Grid container style={{ width: '98%', marginTop: '50px' }} justify="space-around">
+                                                </CardContent>
+                                            <Grid style={{ width: '98%', marginTop: '50px' ,height:'100%'}} >
                                                 <Grid style={{ width: '98%' }}>
                                                     <TextField
                                                         id="outlined-basic"
@@ -155,7 +154,7 @@ export default class DateLocation extends Component {
                                                 </Typography>
                                                     <Grid container justify='flex-end'>
                                                         <Button size="small" color="primary" type="submit" onClick={this.checkInformation} >Preview & Confirm</Button>
-                                                        <Grid  justify='flex-end'>
+                                                        <Grid  container justify='flex-end'>
                                                             <Button size="small" color="primary">
                                                                 Back
                                                         </Button>
@@ -163,7 +162,7 @@ export default class DateLocation extends Component {
                                                     </Grid>
                                                 </CardActions>
                                             </Card>
-                                        </CardContent>
+
                                     </Card>
                                 </Grid>
 

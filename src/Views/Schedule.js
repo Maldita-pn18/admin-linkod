@@ -20,27 +20,20 @@ export default class DateLocation extends Component {
         super(props);
         this.state = {
             columns: [
-                { title: 'Client', field: 'client' },
-                { title: 'Date', field: 'date' },
-                { title: 'Time', field: 'time' },
-                { title: 'From',field: 'from'},
-                { title: 'To', field: 'to' },
-                { title: 'Bus', field: 'bus' },
-                { title: 'Seat/s', field: 'seat' },
-                { title: 'Bill', field: 'bill' },
-                { title: 'Ticket', field: 'ticket' }
+                { title: 'Starting Point', field: 'sPoint' },
+                { title: 'Destination', field: 'destination' },
+                { title: 'Departure', field: 'departure' },
+                { title: 'Arrival', field: 'arrival' },
+                { title: 'Bus Type', field: 'bType' }
             ],
             data: [
                 {
-                    client: 'testing@gmail.com',
-                    date: '11/26/2019',
-                    time: "10:50:25 am",
-                    from: 'Talamban',
-                    to: 'colon',
-                    bus: 'Ceres Liner',
-                    seat:JSON.stringify([1,2,3]),
-                    bill: '100',
-                    ticket: 'BFL-9-1072-ZAW'
+                  sPoint :' Danao',
+                  destination : 'Cebu',
+                  departure : ' 07:30',
+                  arrival : '20:11',
+                  bType : 'Ordinary'
+                  
                 }
             ],
         }
@@ -77,13 +70,13 @@ export default class DateLocation extends Component {
             <div className={classes.root}>
                 <Header />
                 <Grid container spacing={3} justify="center" style={{ marginTop: '3%' }}>
-                    <Grid item xs={11} >
+                    <Grid item xs={7} >
                         <Paper className={classes.paper} >
                             <Grid container justify='space-around' style={{ height: '10%', marginTop: '1%' }}>
                                 <Grid style={{ width: '100%' }}>
                                     <Card style={{ maxHeight: '300px' }}>
                                         <CardContent style={{ backgroundColor: '#1976d2' }}>
-                                            <p style={{ textAlign: 'justify' }}><InfoIcon /><b>Manage Bookings<br ></br></b>
+                                            <p style={{ textAlign: 'justify' }}><InfoIcon /><b>Buses Schedule<br ></br></b>
                                             </p>
                                         </CardContent>
                                     </Card>

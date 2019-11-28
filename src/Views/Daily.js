@@ -90,13 +90,13 @@ export default class DateLocation extends Component {
             <div className={classes.root}>
                 <Header />
                 <Grid container spacing={3} justify="center" style={{ marginTop: '3%' }}>
-                    <Grid item xs={10} >
+                    <Grid item xs={11} >
                         <Paper className={classes.paper} >
                             <Grid container justify='space-around' style={{ height: '10%', marginTop: '1%' }}>
                                 <Grid style={{ width: '100%' }}>
                                     <Card style={{ maxHeight: '300px' }}>
                                         <CardContent style={{ backgroundColor: '#1976d2' }}>
-                                            <p style={{ textAlign: 'justify' }}><InfoIcon /><b>Buses Schedule<br ></br></b>
+                                            <p style={{ textAlign: 'justify' }}><InfoIcon /><b>Buses List<br ></br></b>
                                             </p>
                                         </CardContent>
                                     </Card>
@@ -104,6 +104,7 @@ export default class DateLocation extends Component {
                             </Grid>
                             <Grid>
                                 <MaterialTable
+                                title = ''
                                     columns={this.state.columns}
                                     data={this.state.data}
                                     editable={{
