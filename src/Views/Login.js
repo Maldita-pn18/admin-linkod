@@ -7,6 +7,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import CardContent from '@material-ui/core/CardContent';
+import Paper from '@material-ui/core/Paper';
+import Card from '@material-ui/core/Card';
 
 export default class Login extends Component {
 
@@ -33,22 +37,15 @@ export default class Login extends Component {
     )
   }
   loginForm() {
-    const classes = useStyles();
-    const useStyles = makeStyles(theme => ({
-      '@global': {
-        body: {
-          backgroundColor: theme.palette.common.white,
-        },
+    const classes = makeStyles(theme => ({
+      body: {
+        backgroundColor: theme.palette.common.white,
       },
       paper: {
         marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-      },
-      avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
       },
       form: {
         width: '100%', // Fix IE 11 issue.
@@ -57,56 +54,80 @@ export default class Login extends Component {
       submit: {
         margin: theme.spacing(3, 0, 2),
       },
+      root: {
+        flexGrow: 1,
+    },
+    paper: {
+        height: 100,
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary
+    },
+    bigAvatar: {
+      width: 60,
+      height: 60,
+    },
     }));
 
     return (
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Admin
-        </Typography>
-          <Typography backgroundColor="pink" ></Typography>
-          <form className={classes.form} noValidate>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
+      <Grid container spacing={3} justify="center" style={{ marginTop: '10%' }}>
+        <Grid item xs={5} >
+          <Paper className={classes.paper} >
+            <Grid container justify='space-around' style={{ height: '50%', marginTop: '8%' }}>
+              <Grid style={{ width: '100%' }}>
+                <Card style={{ height: '400px' }}>
+                  <CardContent >
+                    <CssBaseline />
+                    <div className={classes.paper}>
+                      <center>  <LockOutlinedIcon />
+                        <Avatar alt="Remy Sharp" src="https://cdn1.vectorstock.com/i/1000x1000/11/10/admin-icon-male-person-profile-avatar-with-gear-vector-25811110.jpg" className={classes.bigAvatar} />
+                      <Typography component="h1" variant="h5">
+                        Admin
+                      </Typography></center>
+                      <Typography backgroundColor="pink" ></Typography>
+                      <form className={classes.form} noValidate>
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          required
+                          fullWidth
+                          id="username"
+                          label="Username"
+                          name="username"
+                          autoComplete="username"
+                          autoFocus
+                        />
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          required
+                          fullWidth
+                          name="password"
+                          label="Password"
+                          type="password"
+                          id="password"
+                          autoComplete="current-password"
+                        />
 
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Login
-          </Button>
-          </form>
-        </div>
-      </Container>
+                        <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          className={classes.submit}
+                        >
+                          Login
+                    </Button>
+                      </form>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+        </Grid>
 
-    );
-  }
+        );
+      }
 }

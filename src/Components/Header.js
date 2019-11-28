@@ -11,8 +11,6 @@ import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import DirectionsBusIcon from '@material-ui/icons/DirectionsBus';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
-import Grid from '@material-ui/core/Grid';
-import RoomIcon from '@material-ui/icons/Room';
 import Dashboard from '../Views/Dashboard';
 import Link from '@material-ui/core/Link';
 import Viewall from '../Views/Viewall';
@@ -119,7 +117,7 @@ export default function SearchAppBar() {
           <Tab label="Buses" icon={<DirectionsBusIcon />} {...a11yProps(3)} />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
+      {/* <TabPanel value={value} index={0}>
           <div>
             <Dashboard/>
           </div>
@@ -138,7 +136,7 @@ export default function SearchAppBar() {
           <div>
             <Daily/>
           </div>
-        </TabPanel>
+        </TabPanel> */}
       </div>
     </div>
   );
