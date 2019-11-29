@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
+import { Redirect } from "react-router-dom";
+// import { ToggleRadioButtonChecked } from 'material-ui/svg-icons';
 // import "../Views/App.css";
 
 
@@ -30,43 +32,64 @@ export default class Login extends Component {
       errors: {
         username: '',
         password: '',
-      }
+      },
+      username: "",
+      password: "",
+      todashboard:false,
     };
+  }
+
+  login = () => {
+    localStorage.setItem("username",this.state.username)
+    localStorage.setItem("password",this.state.password)
+    //after login 
+    //check username and password in the database
+    //if successfull response token
+    //then go to dashboard
+    //if unsuccessfull set errors.username and password to Invalid username and invalid password
+    
+    if(this.state.username !== "" && this.state.password !== ""){ //testing only
+      this.setState({todashboard:true});
+    }
   }
 
   handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
     let errors = this.state.errors;
-
     switch (name) {
-      case 'username': 
-        errors.username = 
-          validEmailRegex.test(value)
-            ? ''
-            : 'Username must be 5 characters long!';
+      case 'username':
+        if (value.length < 5) {
+          errors.username = 'Username must be 5 characters long!'
+        } else {
+          errors.username = "";
+          this.setState({username:value});
+        }
         break;
-      case 'password': 
-        errors.password = 
-          value.length < 8
-            ? 'Password must be 8 characters long!'
-            : '';
+      case 'password':
+        if (value.length < 8) {
+          console.log(value)
+          errors.password = 'Password must be 8 characters long!'
+        } else {
+          errors.password = "";
+          this.setState({password:value});
+        }
         break;
-      default:
-        break;
-    }
-
-    this.setState({errors, [name]: value});
+    } 
+    this.setState({ errors, [name]: value });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.setState({formValid: validateForm(this.state.errors)});
-    this.setState({errorCount: countErrors(this.state.errors)});
+    this.setState({ formValid: validateForm(this.state.errors) });
+    this.setState({ errorCount: countErrors(this.state.errors) });
   }
 
   render() {
-    const {errors, formValid} = this.state;
+    if(this.state.todashboard){
+      return <Redirect to={{ pathname: "/admin/" }} />;
+    }
+    const { errors, formValid } = this.state;
     const classes = makeStyles(theme => ({
       root: {
         display: 'flex',
@@ -82,25 +105,25 @@ export default class Login extends Component {
     return (
       <div className='wrapper'>
         <div className='form-wrapper'>
-        <center><Avatar alt="Remy Sharp" src="https://cdn1.vectorstock.com/i/1000x1000/11/10/admin-icon-male-person-profile-avatar-with-gear-vector-25811110.jpg" style={{height:'130px',width: '140px',}}className={classes.bigAvatar} />
-          <h2>Admin</h2></center>
+          <center><Avatar alt="Remy Sharp" src="https://cdn1.vectorstock.com/i/1000x1000/11/10/admin-icon-male-person-profile-avatar-with-gear-vector-25811110.jpg" style={{ height: '130px', width: '140px', }} className={classes.bigAvatar} />
+            <h2>Admin</h2></center>
           <form onSubmit={this.handleSubmit} noValidate>
-          <div className='username'>
+            <div className='username'>
               <label htmlFor="username">Username</label>
-              <input type='username' name='username' onChange={this.handleChange} noValidate />
-              {errors.username.length > 0 && 
+              <input type='username' className="credentials" name='username' onChange={this.handleChange}noValidate />
+              {errors.username.length > 0 &&
                 <span className='error'>{errors.username}</span>}
             </div>
             <div className='password'>
               <label htmlFor="password">Password</label>
-              <input type='password' name='password' onChange={this.handleChange} noValidate />
-              {errors.password.length > 0 && 
+              <input type='password' className="credentials" name='password' onChange={this.handleChange} noValidate />
+              {errors.password.length > 0 &&
                 <span className='error'>{errors.password}</span>}
             </div>
             <div className='submit'>
-              <button>submit</button>
+              <button id="login" onClick={this.login}>submit</button>
             </div>
-            <div className= "info">{this.state.errorCount !== null ? <p className="form-status">Form is {formValid ? 'valid ✅' : 'invalid ❌'}</p> : ''}</div>
+            {/* <div className="info">{this.state.errorCount !== null ? <p className="form-status">Form is {formValid ? 'valid ✅' : 'invalid ❌'}</p> : ''}</div> */}
           </form>
         </div>
       </div>
