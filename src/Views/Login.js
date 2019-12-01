@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import { Redirect } from "react-router-dom";
+import axios from "axios";
 // import { ToggleRadioButtonChecked } from 'material-ui/svg-icons';
 // import "../Views/App.css";
 
@@ -35,21 +36,43 @@ export default class Login extends Component {
       },
       username: "",
       password: "",
-      todashboard:false,
+      todashboard: false,
     };
   }
 
+  loginAuth() {
+    return new Promise((resolve, reject) => {
+      axios.get('http://localhost:4000/login/admin/' + this.state.username + '/' + this.state.password)
+        .then(res => {
+          console.log(res)
+            resolve(res)
+        })
+        .catch(err =>{
+          reject(err)
+        })
+    })
+  }
+
   login = () => {
-    localStorage.setItem("username",this.state.username)
-    localStorage.setItem("password",this.state.password)
+    // localStorage.setItem("username",this.state.username)
+    // localStorage.setItem("password",this.state.password)
     //after login 
     //check username and password in the database
-    //if successfull response token
+    //if successfull response token then store to localstorage
     //then go to dashboard
     //if unsuccessfull set errors.username and password to Invalid username and invalid password
-    
-    if(this.state.username !== "" && this.state.password !== ""){ //testing only
-      this.setState({todashboard:true});
+
+    if (this.state.username !== "" && this.state.password !== "") { 
+      let errors = this.state.errors;
+      this.loginAuth().then(res => {
+        if(res.data.data.body.auth){
+          this.setState({ todashboard: true });
+          localStorage.setItem("token",res.data.data.body.accessToken)
+        }else{
+          errors.username = 'Invalid Username!'
+          errors.password = 'Invalid Password!'
+        }
+      })
     }
   }
 
@@ -63,19 +86,18 @@ export default class Login extends Component {
           errors.username = 'Username must be 5 characters long!'
         } else {
           errors.username = "";
-          this.setState({username:value});
+          this.setState({ username: value });
         }
         break;
       case 'password':
-        if (value.length < 8) {
-          console.log(value)
-          errors.password = 'Password must be 8 characters long!'
+        if (value.length === "") {
+          errors.password = 'You are Accessing Admin!'
         } else {
           errors.password = "";
-          this.setState({password:value});
+          this.setState({ password: value });
         }
         break;
-    } 
+    }
     this.setState({ errors, [name]: value });
   }
 
@@ -86,7 +108,7 @@ export default class Login extends Component {
   }
 
   render() {
-    if(this.state.todashboard){
+    if (this.state.todashboard) {
       return <Redirect to={{ pathname: "/admin/" }} />;
     }
     const { errors, formValid } = this.state;
@@ -110,7 +132,7 @@ export default class Login extends Component {
           <form onSubmit={this.handleSubmit} noValidate>
             <div className='username'>
               <label htmlFor="username">Username</label>
-              <input type='username' className="credentials" name='username' onChange={this.handleChange}noValidate />
+              <input type='username' className="credentials" name='username' onChange={this.handleChange} noValidate />
               {errors.username.length > 0 &&
                 <span className='error'>{errors.username}</span>}
             </div>
