@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import { Redirect } from "react-router-dom";
-
+import axios from "axios";
 
 
 export default class DateLocation extends Component {
@@ -19,19 +19,30 @@ export default class DateLocation extends Component {
     super(props);
     this.state = {
       toViewAll:false,
-      toUpdateBooking: false,
+      numberOfTickets:'',
+      numberOfBuses:'',
+      dailyTotal:'',
     }
   }
 
-  checkCredential = () => {
-
+  dashboardRequest() {
+    return new Promise((resolve, reject) => {
+      // axios.get('http://localhost:4000/login/admin/' + this.state.username + '/' + this.state.password)
+      //   .then(res => {
+      //     console.log(res)
+      //       resolve(res)
+      //   })
+      //   .catch(err =>{
+      //     reject(err)
+      //   })
+    })
+  }
+  componentDidMount(){
+    this.dashboardRequest().then()
   }
   render() {
     if(this.state.toViewAll){
       return <Redirect to={{ pathname: "/admin/Viewall" }} />;
-    }
-    if (this.state.toUpdateBooking){
-      return <Redirect to={{ pathname: "/admin/Info" }} />;
     }
     return (
       <div>
@@ -72,7 +83,7 @@ export default class DateLocation extends Component {
                   <Card className={classes.card} style={{ maxHeight: '300px', marginTop: '1%' }}>
                     <CardContent>
                       <Typography gutterBottom variant="h6" component="h6">
-                        <b>Latest Booking</b> <Link
+                        <b>SUMMARY</b> <Link
                           component="button"
                           variant="body2"
                           onClick={() => {
@@ -83,20 +94,9 @@ export default class DateLocation extends Component {
 
                       </Typography>
                       <Grid>
-                        <p>
-                          22-02-2017 09:16
-                        </p>
-                        <p style={{ marginTop: '1%' }}><Link
-                          component="button"
-                          variant="body2"
-                          onClick={() => {
-                            this.setState({toUpdateBooking:true})
-                          }}
-                        >Mary Grace Cordoto</Link></p>
-                        <p>66332233</p>
-                        <p>Atlanta - Cincinnati, 13:00 - 20:55</p>
-                        <p>at 23-02-2017</p>
-                        <p>from Atlanta to Charlotte</p>
+                        <h3>Number Of Operating Bus/s:</h3><span>{this.state.numberOfBuses}</span>
+                        <h3>Number Of Ticket/s:</h3><span>{this.state.numberOfTickets}</span>
+                        <h3>Daily Total:</h3><span>{this.state.dailyTotal}</span>
                       </Grid>
                     </CardContent>
                   </Card>

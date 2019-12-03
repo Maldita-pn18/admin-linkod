@@ -3,11 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import { Redirect } from "react-router-dom";
 import axios from "axios";
-// import { ToggleRadioButtonChecked } from 'material-ui/svg-icons';
-// import "../Views/App.css";
 
-
-const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
 const validateForm = (errors) => {
   let valid = true;
   Object.values(errors).forEach(
