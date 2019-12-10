@@ -8,14 +8,13 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import { Redirect } from "react-router-dom";
-
+import axios from "axios";
 
 export default class DateLocation extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      dashboard_disabled:'',
       toViewAll:false,
       numberOfTickets:'',
       numberOfBuses:'',
@@ -24,19 +23,24 @@ export default class DateLocation extends Component {
   }
 
   componentDidMount(){
-    this.setState({dashboard_disabled:this.props.location.state.dashboard_disabled})
+    this.dashboardRequest().then(result =>{
+      this.setState({
+        numberOfTickets:result.data.data.body.ticketCount,
+        numberOfBuses:result.data.data.body.busCount
+      })
+    })
   }
 
   dashboardRequest() {
     return new Promise((resolve, reject) => {
-      // axios.get('http://localhost:4000/login/admin/' + this.state.username + '/' + this.state.password)
-      //   .then(res => {
-      //     console.log(res)
-      //       resolve(res)
-      //   })
-      //   .catch(err =>{
-      //     reject(err)
-      //   })
+      axios.get('http://localhost:4000/admin/dashboard')
+        .then(res => {
+          console.log(res)
+            resolve(res)
+        })
+        .catch(err =>{
+          reject(err)
+        })
     })
   }
   componentDidMount(){

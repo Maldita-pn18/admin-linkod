@@ -5,14 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import CardContent from '@material-ui/core/CardContent';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
-import InfoIcon from '@material-ui/icons/Info';
 import MaterialTable from 'material-table';
-
-
-
-
+import axios from "axios";
 
 export default class DateLocation extends Component {
 
@@ -21,7 +15,7 @@ export default class DateLocation extends Component {
         this.state = {
             columns: [
                 { title: 'Bus Name', field: 'busName' },
-                { title: 'Seats', field: 'bus.seats.one' },
+                { title: 'Seats Count', field: 'bus.seats' },
                 { title: 'Bus Number', field: 'bus.busNumber' },
                 { title: 'Starting Point', field: 'bus.routes.start' },
                 { title: 'Destination', field: 'bus.routes.end' },
@@ -32,31 +26,12 @@ export default class DateLocation extends Component {
                 { title: 'Adult', field: 'fare.adult' },
             ],
             data: [
-                {
-                    "busName": "Ceres",
-                    "bus": {
-                        "seats": { "one": "true" },
-                        "busNumber": "00791",
-                        "routes": {
-                            "start": "Danao",
-                            "end": "Cebu",
-                        }
-                    },
-                    "startTime": " 12:2:24 pm",
-                    "endTime": " 12:2:24 am",
-                    "duration": "1",
-                    "fare": {
-                        "child": "50",
-                        "adult": "100"
-                    }
-                },
+                
             ],
         }
     }
 
-    checkCredential = () => {
 
-    }
     render() {
         return (
             <div>
@@ -65,9 +40,68 @@ export default class DateLocation extends Component {
         )
     }
 
+    addBus = (data) => {
+        return new Promise((resolve, reject) => {
+            axios.post('http://localhost:4000/admin/busAdd', data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    }
+
+    updateBus = (id,data) => {
+        return new Promise((resolve, reject) => {
+            axios.put('http://localhost:4000/admin/busUpdate/'+id, data)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    }
+
+    deleteBus = (id) => {
+        return new Promise((resolve, reject) => {
+            axios.delete('http://localhost:4000/admin/busDelete/'+id)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    }
+
+    retrieveDailyBuses = () => {
+        return new Promise((resolve, reject) => {
+            axios.get('http://localhost:4000/admin/bus')
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    }
+
+    componentDidMount() {
+        this.retrieveDailyBuses().then(result => {
+            let buses = []
+            for(var i = 0; i < result.data.data.body.length; ++i){
+                let bus = result.data.data.body[i]
+                let seat = result.data.data.body[i].bus.seats
+                bus.bus["seats"] = Object.keys(seat).length
+                buses.push(bus)
+            }
+            this.setState({data:buses})
+        })
+    }
+
     view() {
-
-
         const classes = makeStyles(theme => ({
             root: {
                 flexGrow: 1,
@@ -80,10 +114,7 @@ export default class DateLocation extends Component {
             },
             selectEmpty: {
                 marginTop: theme.spacing(2),
-            },
-            // table: {
-            //     minWidth: 700,
-            // },
+            }
         }));
 
         return (
@@ -96,7 +127,7 @@ export default class DateLocation extends Component {
                                 <Grid style={{ width: '100%' }}>
                                     <Card style={{ maxHeight: '300px' }}>
                                         <CardContent style={{ backgroundColor: '#1976d2' }}>
-                                            <p style={{ textAlign: 'justify' , color:'white'}}><b><i className="fas fa-info-circle" style={{fontSize:'30px' , color:'white'}}></i> &nbsp; &nbsp;Buses List<br ></br></b>
+                                            <p style={{ textAlign: 'justify', color: 'white' }}><b><i className="fas fa-info-circle" style={{ fontSize: '30px', color: 'white' }}></i> &nbsp; &nbsp;Buses List<br ></br></b>
                                             </p>
                                         </CardContent>
                                     </Card>
@@ -104,7 +135,7 @@ export default class DateLocation extends Component {
                             </Grid>
                             <Grid>
                                 <MaterialTable
-                                title = ''
+                                    title=''
                                     columns={this.state.columns}
                                     data={this.state.data}
                                     editable={{
@@ -118,6 +149,9 @@ export default class DateLocation extends Component {
                                                         return { ...prevState, data };
                                                     });
                                                 }, 600);
+                                                this.addBus(newData).then(res => {
+                                                    console.log(res)
+                                                })
                                             }),
                                         onRowUpdate: (newData, oldData) =>
                                             new Promise(resolve => {
@@ -131,6 +165,9 @@ export default class DateLocation extends Component {
                                                         });
                                                     }
                                                 }, 600);
+                                                this.updateBus(oldData._id,newData).then(result =>{
+                                                    console.log(result)
+                                                })
                                             }),
                                         onRowDelete: oldData =>
                                             new Promise(resolve => {
@@ -142,6 +179,9 @@ export default class DateLocation extends Component {
                                                         return { ...prevState, data };
                                                     });
                                                 }, 600);
+                                                this.deleteBus(oldData._id).then(result => {
+                                                    console.log(result)
+                                                })
                                             }),
                                     }}
                                 />

@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import MaterialTable from 'material-table';
+import axios from "axios";
 
 
 
@@ -17,32 +18,54 @@ export default class DateLocation extends Component {
             columns: [
                 { title: 'Client', field: 'client' },
                 { title: 'Date', field: 'date' },
-                { title: 'Time', field: 'time' },
+                { title: 'Departure Time', field: 'departureTime' },
+                { title: 'Arrival Time', field: 'arrivalTime' },
                 { title: 'From', field: 'from' },
                 { title: 'To', field: 'to' },
                 { title: 'Bus', field: 'bus' },
-                { title: 'Seat/s', field: 'seat' },
+                { title: 'Bus Number', field: 'busNumber' },
+                { title: 'Seat/s', field: 'seats' },
                 { title: 'Bill', field: 'bill' },
-                { title: 'Ticket', field: 'ticket' }
+                { title: 'Ticket', field: 'ticketNumber' }
             ],
-            data: [
-                {
-                    client: 'testing@gmail.com',
-                    date: '11/26/2019',
-                    time: "10:50:25 am",
-                    from: 'Talamban',
-                    to: 'colon',
-                    bus: 'Ceres Liner',
-                    seat: JSON.stringify([1, 2, 3]),
-                    bill: '100',
-                    ticket: 'BFL-9-1072-ZAW'
-                }
-            ],
+            data: [],
         }
     }
 
-    checkCredential = () => {
+    componentDidMount() {
+        this.retrieveBookings().then(result => {
+            let Tickets = []
+            for (var i = 0; i < result.data.data.body.length; ++i) {
+                result.data.data.body[i]["client"] = result.data.data.body[i].lastname + ", " + result.data.data.body[i].firstname
+                result.data.data.body[i]["seats"] = JSON.stringify(result.data.data.body[i].seats);
+                Tickets.push(result.data.data.body[i])
+            }
+            this.setState({ data: Tickets })
+        })
+    }
 
+    retrieveBookings = () => {
+        return new Promise((resolve, reject) => {
+            axios.get('http://localhost:4000/admin/bookings')
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    }
+
+    deleteBookings = (id) => {
+        return new Promise((resolve, reject) => {
+            axios.delete('http://localhost:4000/admin/bookingDelete/'+id)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
     }
     render() {
         return (
@@ -95,30 +118,6 @@ export default class DateLocation extends Component {
                                     columns={this.state.columns}
                                     data={this.state.data}
                                     editable={{
-                                        onRowAdd: newData =>
-                                            new Promise(resolve => {
-                                                setTimeout(() => {
-                                                    resolve();
-                                                    this.setState(prevState => {
-                                                        const data = [...prevState.data];
-                                                        data.push(newData);
-                                                        return { ...prevState, data };
-                                                    });
-                                                }, 600);
-                                            }),
-                                        onRowUpdate: (newData, oldData) =>
-                                            new Promise(resolve => {
-                                                setTimeout(() => {
-                                                    resolve();
-                                                    if (oldData) {
-                                                        this.setState(prevState => {
-                                                            const data = [...prevState.data];
-                                                            data[data.indexOf(oldData)] = newData;
-                                                            return { ...prevState, data };
-                                                        });
-                                                    }
-                                                }, 600);
-                                            }),
                                         onRowDelete: oldData =>
                                             new Promise(resolve => {
                                                 setTimeout(() => {
@@ -129,8 +128,11 @@ export default class DateLocation extends Component {
                                                         return { ...prevState, data };
                                                     });
                                                 }, 600);
+                                                this.deleteBookings(oldData._id).then(result => {
+                                                    console.log(result)
+                                                })
                                             }),
-                                    }}
+                                    }}  
                                 />
                             </Grid>
                         </Paper>

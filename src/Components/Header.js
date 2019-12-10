@@ -18,7 +18,7 @@ export default class Navigation extends Component {
 
   render() {
     if (this.state.toDashboard) {
-      return <Redirect to={{ pathname: "/admin/",state:{dashboard_disabled:true}}} />
+      return <Redirect to={{ pathname: "/admin/"}} />
     }
     if(this.state.toBookings){
       return <Redirect to={{ pathname: "/admin/ViewAll" }} />
