@@ -41,9 +41,9 @@ export default class Login extends Component {
       axios.get('http://localhost:4000/login/admin/' + this.state.username + '/' + this.state.password)
         .then(res => {
           console.log(res)
-            resolve(res)
+          resolve(res)
         })
-        .catch(err =>{
+        .catch(err => {
           reject(err)
         })
     })
@@ -58,13 +58,13 @@ export default class Login extends Component {
     //then go to dashboard
     //if unsuccessfull set errors.username and password to Invalid username and invalid password
 
-    if (this.state.username !== "" && this.state.password !== "") { 
+    if (this.state.username !== "" && this.state.password !== "") {
       let errors = this.state.errors;
       this.loginAuth().then(res => {
-        if(res.data.data.body.auth){
+        if (res.data.data.body.auth) {
           this.setState({ todashboard: true });
-          localStorage.setItem("token",res.data.data.body.accessToken)
-        }else{
+          localStorage.setItem("token", res.data.data.body.accessToken)
+        } else {
           errors.username = 'Invalid Username!'
           errors.password = 'Invalid Password!'
         }
@@ -103,10 +103,13 @@ export default class Login extends Component {
     this.setState({ errorCount: countErrors(this.state.errors) });
   }
 
-  render() {
+  dashboard() {
     if (this.state.todashboard) {
-      return <Redirect to={{ pathname: "/admin/" }} />;
+      return <Redirect to={{ pathname: "/admin/" }} />
     }
+  }
+
+  loginComponent() {
     const { errors, formValid } = this.state;
     const classes = makeStyles(theme => ({
       root: {
@@ -146,5 +149,14 @@ export default class Login extends Component {
         </div>
       </div>
     );
+  }
+
+  render() {
+    return (
+      <div>
+        {this.loginComponent()}
+        {this.dashboard()}
+      </div>
+    )
   }
 }

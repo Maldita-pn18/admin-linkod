@@ -1,143 +1,88 @@
-import React  from 'react';
+import React, { Component } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
-import PropTypes from 'prop-types';
-import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
-import ScheduleIcon from '@material-ui/icons/Schedule';
-import DirectionsBusIcon from '@material-ui/icons/DirectionsBus';
-import NoteAddIcon from '@material-ui/icons/NoteAdd';
-import Dashboard from '../Views/Dashboard';
-import Link from '@material-ui/core/Link';
-import Viewall from '../Views/Viewall';
-import Schedule from '../Views/Schedule';
-import Daily from '../Views/Daily'
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import { Redirect } from "react-router-dom";
+export default class Navigation extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      toDashboard: false,
+      toSchedule: false,
+      toBuses: false,
+      toBookings: false,
+    }
+  }
 
-  return (
-    <Typography
-      component="div"
-      role="tabpanel"
-      hidden={value !== index}
-      id={`scrollable-auto-tabpanel-${index}`}
-      aria-labelledby={`scrollable-auto-tab-${index}`}
-      {...other}
-    >
-      <Box p={3}>{children}</Box>
-    </Typography>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `scrollable-auto-tab-${index}`,
-    'aria-controls': `scrollable-auto-tabpanel-${index}`,
-  };
-}
-
-  const useStyles = makeStyles(theme => ({
-    text: {
-      padding: theme.spacing(2, 2, 0),
-    },
-    paper: {
-      paddingBottom: 50,
-    },
-    list: {
-      marginBottom: theme.spacing(2),
-    },
-    subheader: {
-      backgroundColor: theme.palette.background.paper,
-    },
-    appBar: {
-      top: 'auto',
-      bottom: 0,
-      width: "20%",
-      left: 0,
-    },
-    grow: {
-      flexGrow: 1,
-    },
-    root: {
-      flexGrow: 1,
-      width: '100%',
-      backgroundColor: theme.palette.background.paper,
-    },
-    title: {
-      flexGrow: 1,
-      display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'block',
-      },
-    },
-    
-  }));
-  
-
-export default function SearchAppBar() {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-  
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
-            LINKOD
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <div className={classes.root}>
-      <AppBar position="static" color="default">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="scrollable"
-          scrollButtons="auto"
-          aria-label="scrollable auto tabs example">
-          <Tab label="Dashboard" style={{ marginLeft: '30%' }} icon={<DashboardRoundedIcon />} {...a11yProps(0)} />
-          <Tab label="Schedule"  icon={<ScheduleIcon />} {...a11yProps(1)} />
-          <Tab label="Bookings" icon={<NoteAddIcon />}{...a11yProps(2)} />
-          <Tab label="Buses" icon={<DirectionsBusIcon />} {...a11yProps(3)} />
-        </Tabs>
-      </AppBar>
-      {/* <TabPanel value={value} index={0}>
-          <div>
-            <Dashboard/>
-          </div>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <div>
-            <Schedule/>
-          </div>
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <div>
-          <Viewall/>
-          </div>
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          <div>
-            <Daily/>
-          </div>
-        </TabPanel> */}
+  render() {
+    if (this.state.toDashboard) {
+      return <Redirect to={{ pathname: "/admin/",state:{dashboard_disabled:true}}} />
+    }
+    if(this.state.toBookings){
+      return <Redirect to={{ pathname: "/admin/ViewAll" }} />
+    }
+    if(this.state.toBuses){
+      return <Redirect to={{ pathname: "/admin/Daily" }} />
+    }
+    if(this.state.toSchedule){
+      return <Redirect to={{ pathname: "/admin/Schedule" }} />
+    }
+    return (
+      <div>
+        {this.ButtonAppBar()}
+        {/* {this.dashboard()} */}
       </div>
-    </div>
-  );
+    )
+  }
+  dashboard = () => {
+    this.setState({toDashboard:true})
+    // if (this.state.toDashboard) {
+    //   return <Redirect to={{ pathname: "/admin/" }} />
+    // }
+  }
+
+  schedule = () => {
+    this.setState({toSchedule:true})
+  }
+
+  buses = () => {
+    this.setState({toBuses:true})
+  }
+
+  bookings = () => {
+    this.setState({toBookings:true})
+  }
+
+
+  ButtonAppBar() {
+    let states = this.state
+    const classes = makeStyles(theme => ({
+      root: {
+        flexGrow: 1,
+      },
+      menuButton: {
+        marginRight: theme.spacing(2),
+      },
+      title: {
+        flexGrow: 1,
+      },
+    }));
+
+    return (
+      <div className={classes.root}>
+        <AppBar position="static" style={{ backgroundColor: '#0269e8' }}>
+          <Toolbar>
+            <ButtonGroup style={{ height: '30px' }} variant="text" aria-label="outlined contained primary button group">
+              <Button onClick={this.dashboard} style={{ color: "white" }}><i className="fas fa-tachometer-alt" style={{ fontSize: '30px' }}></i>&nbsp;&nbsp;Dashboard</Button>
+              <Button onClick={this.schedule} style={{ color: "white" }}><i className="far fa-calendar-alt" style={{ fontSize: '30px' }} ></i>&nbsp;&nbsp;Schedule</Button>
+              <Button onClick={this.buses} style={{ color: "white" }} ><i className="fas fa-bus-alt" style={{ fontSize: '30px' }}></i>&nbsp;&nbsp;Buses</Button>
+              <Button onClick={this.bookings} style={{ color: "white" }}><i className="fas fa-clipboard-list" style={{ fontSize: '30px' }}></i>&nbsp;&nbsp;Bookings</Button>
+            </ButtonGroup>
+          </Toolbar>
+        </AppBar>
+      </div>
+    );
+  }
 }

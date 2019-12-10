@@ -96,7 +96,7 @@ export default class DateLocation extends Component {
                                 <Grid style={{ width: '100%' }}>
                                     <Card style={{ maxHeight: '300px' }}>
                                         <CardContent style={{ backgroundColor: '#1976d2' }}>
-                                            <p style={{ textAlign: 'justify' }}><InfoIcon /><b>Buses List<br ></br></b>
+                                            <p style={{ textAlign: 'justify' , color:'white'}}><b><i className="fas fa-info-circle" style={{fontSize:'30px' , color:'white'}}></i> &nbsp; &nbsp;Buses List<br ></br></b>
                                             </p>
                                         </CardContent>
                                     </Card>

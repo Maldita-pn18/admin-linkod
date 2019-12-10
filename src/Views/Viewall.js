@@ -2,14 +2,9 @@ import React, { Component } from 'react';
 import Header from '../Components/Header';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
-import InfoIcon from '@material-ui/icons/Info';
 import MaterialTable from 'material-table';
 
 
@@ -23,7 +18,7 @@ export default class DateLocation extends Component {
                 { title: 'Client', field: 'client' },
                 { title: 'Date', field: 'date' },
                 { title: 'Time', field: 'time' },
-                { title: 'From',field: 'from'},
+                { title: 'From', field: 'from' },
                 { title: 'To', field: 'to' },
                 { title: 'Bus', field: 'bus' },
                 { title: 'Seat/s', field: 'seat' },
@@ -38,7 +33,7 @@ export default class DateLocation extends Component {
                     from: 'Talamban',
                     to: 'colon',
                     bus: 'Ceres Liner',
-                    seat:JSON.stringify([1,2,3]),
+                    seat: JSON.stringify([1, 2, 3]),
                     bill: '100',
                     ticket: 'BFL-9-1072-ZAW'
                 }
@@ -83,7 +78,11 @@ export default class DateLocation extends Component {
                                 <Grid style={{ width: '100%' }}>
                                     <Card style={{ maxHeight: '300px' }}>
                                         <CardContent style={{ backgroundColor: '#1976d2' }}>
-                                            <p style={{ textAlign: 'justify' }}><InfoIcon /><b>Manage Bookings<br ></br></b>
+                                            <p style={{ textAlign: 'justify', color: 'white' }}>
+                                                <b>
+                                                    <i className="fas fa-info-circle" style={{ fontSize: '30px', color: 'white' }}>
+                                                    </i> &nbsp; &nbsp;Manage Bookings<br ></br>
+                                                </b>
                                             </p>
                                         </CardContent>
                                     </Card>
@@ -91,7 +90,7 @@ export default class DateLocation extends Component {
                             </Grid>
                             <Grid>
                                 <MaterialTable
-                                    title = ''
+                                    title=''
                                     // style={{backgroundColor:'lightBlue'}}
                                     columns={this.state.columns}
                                     data={this.state.data}

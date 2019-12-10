@@ -2,15 +2,12 @@ import React, { Component } from 'react';
 import Header from '../Components/Header';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import { Redirect } from "react-router-dom";
-import axios from "axios";
 
 
 export default class DateLocation extends Component {
@@ -18,11 +15,16 @@ export default class DateLocation extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      dashboard_disabled:'',
       toViewAll:false,
       numberOfTickets:'',
       numberOfBuses:'',
       dailyTotal:'',
     }
+  }
+
+  componentDidMount(){
+    this.setState({dashboard_disabled:this.props.location.state.dashboard_disabled})
   }
 
   dashboardRequest() {
