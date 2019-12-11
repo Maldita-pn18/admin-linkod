@@ -15,44 +15,60 @@ export default class DateLocation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toViewAll:false,
-      numberOfTickets:'',
-      numberOfBuses:'',
-      dailyTotal:'',
+      toViewAll: false,
+      numberOfTickets: 0,
+      numberOfBuses: 0,
+      dailyTotal: 0,
+      toLogin:false
     }
   }
 
-  componentDidMount(){
-    this.dashboardRequest().then(result =>{
-      this.setState({
-        numberOfTickets:result.data.data.body.ticketCount,
-        numberOfBuses:result.data.data.body.busCount
+  componentDidMount() {
+    if (localStorage.getItem('token') !== null) {
+      this.dashboardRequest().then(result => {
+        if (result.data.data.body.ticketCount === undefined) {
+          result.data.data.body.ticketCount = 0
+        }
+        if (result.data.data.body.busCount === undefined) {
+          result.data.data.body.busCount = 0
+        }
+        this.setState({
+          numberOfTickets: result.data.data.body.ticketCount,
+          numberOfBuses: result.data.data.body.busCount,
+          dailyTotal: result.data.data.body.dailyTotal
+        })
       })
-    })
+    }else{
+      this.setState({toLogin:true})
+    }
+  }
+
+  login(){
+    if(this.state.toLogin){
+      return <Redirect to={{pathname:'/admin/login'}}/>
+    }
   }
 
   dashboardRequest() {
     return new Promise((resolve, reject) => {
       axios.get('http://localhost:4000/admin/dashboard')
         .then(res => {
-          console.log(res)
-            resolve(res)
+          resolve(res)
         })
-        .catch(err =>{
+        .catch(err => {
           reject(err)
         })
     })
   }
-  componentDidMount(){
-    this.dashboardRequest().then()
-  }
+
   render() {
-    if(this.state.toViewAll){
+    if (this.state.toViewAll) {
       return <Redirect to={{ pathname: "/admin/Viewall" }} />;
     }
     return (
       <div>
         {this.datelocation()}
+        {this.login()}
       </div>
     )
   }
@@ -93,16 +109,16 @@ export default class DateLocation extends Component {
                           component="button"
                           variant="body2"
                           onClick={() => {
-                            this.setState({toViewAll:true})
+                            this.setState({ toViewAll: true })
                           }}
                         >(view all)</Link>
                         <hr ></hr>
 
                       </Typography>
                       <Grid>
-                        <h3>Number Of Operating Bus/s:</h3><span>{this.state.numberOfBuses}</span>
-                        <h3>Number Of Ticket/s:</h3><span>{this.state.numberOfTickets}</span>
-                        <h3>Daily Total:</h3><span>{this.state.dailyTotal}</span>
+                        <p><b>Number Of Operating Bus/s:</b>&nbsp;&nbsp;{this.state.numberOfBuses}</p>
+                        <p><b>Number Of Ticket/s:</b>&nbsp;&nbsp;{this.state.numberOfTickets}</p>
+                        <p><b>Daily Total:</b>&nbsp;&nbsp;{this.state.dailyTotal}</p>
                       </Grid>
                     </CardContent>
                   </Card>

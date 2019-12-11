@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import MaterialTable from 'material-table';
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 
 export default class DateLocation extends Component {
@@ -13,6 +14,7 @@ export default class DateLocation extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            toLogin: false,
             columns: [
                 { title: 'Bus Name', field: 'busName' },
                 { title: 'Seats Count', field: 'bus.seats' },
@@ -26,7 +28,7 @@ export default class DateLocation extends Component {
                 { title: 'Adult', field: 'fare.adult' },
             ],
             data: [
-                
+
             ],
         }
     }
@@ -36,8 +38,15 @@ export default class DateLocation extends Component {
         return (
             <div>
                 {this.view()}
+                {this.login()}
             </div>
         )
+    }
+
+    login() {
+        if (this.state.toLogin) {
+            return <Redirect to={{ pathname: '/admin/login' }} />
+        }
     }
 
     addBus = (data) => {
@@ -52,9 +61,9 @@ export default class DateLocation extends Component {
         })
     }
 
-    updateBus = (id,data) => {
+    updateBus = (id, data) => {
         return new Promise((resolve, reject) => {
-            axios.put('http://localhost:4000/admin/busUpdate/'+id, data)
+            axios.put('http://localhost:4000/admin/busUpdate/' + id, data)
                 .then(res => {
                     resolve(res)
                 })
@@ -66,7 +75,7 @@ export default class DateLocation extends Component {
 
     deleteBus = (id) => {
         return new Promise((resolve, reject) => {
-            axios.delete('http://localhost:4000/admin/busDelete/'+id)
+            axios.delete('http://localhost:4000/admin/busDelete/' + id)
                 .then(res => {
                     resolve(res)
                 })
@@ -89,16 +98,20 @@ export default class DateLocation extends Component {
     }
 
     componentDidMount() {
-        this.retrieveDailyBuses().then(result => {
-            let buses = []
-            for(var i = 0; i < result.data.data.body.length; ++i){
-                let bus = result.data.data.body[i]
-                let seat = result.data.data.body[i].bus.seats
-                bus.bus["seats"] = Object.keys(seat).length
-                buses.push(bus)
-            }
-            this.setState({data:buses})
-        })
+        if (localStorage.getItem('token') !== null) {
+            this.retrieveDailyBuses().then(result => {
+                let buses = []
+                for (var i = 0; i < result.data.data.body.length; ++i) {
+                    let bus = result.data.data.body[i]
+                    let seat = result.data.data.body[i].bus.seats
+                    bus.bus["seats"] = Object.keys(seat).length
+                    buses.push(bus)
+                }
+                this.setState({ data: buses })
+            })
+        }else{
+            this.setState({toLogin:true})
+        }
     }
 
     view() {
@@ -165,7 +178,7 @@ export default class DateLocation extends Component {
                                                         });
                                                     }
                                                 }, 600);
-                                                this.updateBus(oldData._id,newData).then(result =>{
+                                                this.updateBus(oldData._id, newData).then(result => {
                                                     console.log(result)
                                                 })
                                             }),

@@ -2,15 +2,12 @@ import React, { Component } from 'react';
 import Header from '../Components/Header';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
-import InfoIcon from '@material-ui/icons/Info';
 import MaterialTable from 'material-table';
+import { Redirect } from "react-router-dom";
+import axios from "axios";
 
 
 
@@ -19,33 +16,54 @@ export default class DateLocation extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            toLogin: false,
             columns: [
-                { title: 'Starting Point', field: 'sPoint' },
-                { title: 'Destination', field: 'destination' },
-                { title: 'Departure', field: 'departure' },
-                { title: 'Arrival', field: 'arrival' },
-                { title: 'Bus Type', field: 'bType' }
+                { title: 'Starting Point', field: 'bus.routes.start' },
+                { title: 'Destination', field: 'bus.routes.end' },
+                { title: 'Departure', field: 'startTime' },
+                { title: 'Arrival', field: 'endTime' },
+                { title: 'Duration', field: 'duration' }
             ],
-            data: [
-                {
-                  sPoint :' Danao',
-                  destination : 'Cebu',
-                  departure : ' 07:30',
-                  arrival : '20:11',
-                  bType : 'Ordinary'
-                  
-                }
-            ],
+            data: [],
         }
     }
 
-    checkCredential = () => {
-
+    componentDidMount() {
+        if (localStorage.getItem('token') !== null) {
+            this.busScheduleRequest().then(result => {
+                console.log(result)
+                this.setState({
+                    data: result.data.data.body
+                })
+            })
+        } else {
+            this.setState({ toLogin: true })
+        }
     }
+
+    login() {
+        if (this.state.toLogin) {
+            return <Redirect to={{ pathname: '/admin/login' }} />
+        }
+    }
+
+    busScheduleRequest() {
+        return new Promise((resolve, reject) => {
+            axios.get('http://localhost:4000/admin/busSchedule')
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    }
+
     render() {
         return (
             <div>
                 {this.view()}
+                {this.login()}
             </div>
         )
     }
@@ -76,7 +94,7 @@ export default class DateLocation extends Component {
                                 <Grid style={{ width: '100%' }}>
                                     <Card style={{ maxHeight: '300px' }}>
                                         <CardContent style={{ backgroundColor: '#1976d2' }}>
-                                        <p style={{ textAlign: 'justify' , color:'white'}}><b><i className="fas fa-info-circle" style={{fontSize:'30px' , color:'white'}}></i> &nbsp; &nbsp;Buses Schedule<br ></br></b>
+                                            <p style={{ textAlign: 'justify', color: 'white' }}><b><i className="fas fa-info-circle" style={{ fontSize: '30px', color: 'white' }}></i> &nbsp; &nbsp;Buses Schedule<br ></br></b>
                                             </p>
                                         </CardContent>
                                     </Card>
@@ -84,46 +102,46 @@ export default class DateLocation extends Component {
                             </Grid>
                             <Grid>
                                 <MaterialTable
-                                    title = ''
+                                    title=''
                                     // style={{backgroundColor:'lightBlue'}}
                                     columns={this.state.columns}
                                     data={this.state.data}
                                     editable={{
-                                        onRowAdd: newData =>
-                                            new Promise(resolve => {
-                                                setTimeout(() => {
-                                                    resolve();
-                                                    this.setState(prevState => {
-                                                        const data = [...prevState.data];
-                                                        data.push(newData);
-                                                        return { ...prevState, data };
-                                                    });
-                                                }, 600);
-                                            }),
-                                        onRowUpdate: (newData, oldData) =>
-                                            new Promise(resolve => {
-                                                setTimeout(() => {
-                                                    resolve();
-                                                    if (oldData) {
-                                                        this.setState(prevState => {
-                                                            const data = [...prevState.data];
-                                                            data[data.indexOf(oldData)] = newData;
-                                                            return { ...prevState, data };
-                                                        });
-                                                    }
-                                                }, 600);
-                                            }),
-                                        onRowDelete: oldData =>
-                                            new Promise(resolve => {
-                                                setTimeout(() => {
-                                                    resolve();
-                                                    this.setState(prevState => {
-                                                        const data = [...prevState.data];
-                                                        data.splice(data.indexOf(oldData), 1);
-                                                        return { ...prevState, data };
-                                                    });
-                                                }, 600);
-                                            }),
+                                        // onRowAdd: newData =>
+                                        //     new Promise(resolve => {
+                                        //         setTimeout(() => {
+                                        //             resolve();
+                                        //             this.setState(prevState => {
+                                        //                 const data = [...prevState.data];
+                                        //                 data.push(newData);
+                                        //                 return { ...prevState, data };
+                                        //             });
+                                        //         }, 600);
+                                        //     }),
+                                        // onRowUpdate: (newData, oldData) =>
+                                        //     new Promise(resolve => {
+                                        //         setTimeout(() => {
+                                        //             resolve();
+                                        //             if (oldData) {
+                                        //                 this.setState(prevState => {
+                                        //                     const data = [...prevState.data];
+                                        //                     data[data.indexOf(oldData)] = newData;
+                                        //                     return { ...prevState, data };
+                                        //                 });
+                                        //             }
+                                        //         }, 600);
+                                        //     }),
+                                        // onRowDelete: oldData =>
+                                        //     new Promise(resolve => {
+                                        //         setTimeout(() => {
+                                        //             resolve();
+                                        //             this.setState(prevState => {
+                                        //                 const data = [...prevState.data];
+                                        //                 data.splice(data.indexOf(oldData), 1);
+                                        //                 return { ...prevState, data };
+                                        //             });
+                                        //         }, 600);
+                                        //     }),
                                     }}
                                 />
                             </Grid>

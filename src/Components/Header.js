@@ -13,21 +13,25 @@ export default class Navigation extends Component {
       toSchedule: false,
       toBuses: false,
       toBookings: false,
+      toLogin:false
     }
   }
 
   render() {
     if (this.state.toDashboard) {
-      return <Redirect to={{ pathname: "/admin/"}} />
+      return <Redirect to={{ pathname: "/admin/" }} />
     }
-    if(this.state.toBookings){
+    if (this.state.toBookings) {
       return <Redirect to={{ pathname: "/admin/ViewAll" }} />
     }
-    if(this.state.toBuses){
+    if (this.state.toBuses) {
       return <Redirect to={{ pathname: "/admin/Daily" }} />
     }
-    if(this.state.toSchedule){
+    if (this.state.toSchedule) {
       return <Redirect to={{ pathname: "/admin/Schedule" }} />
+    }
+    if(this.state.toLogin){
+      return <Redirect to={{ pathname: "/admin/login"}}/>
     }
     return (
       <div>
@@ -37,24 +41,28 @@ export default class Navigation extends Component {
     )
   }
   dashboard = () => {
-    this.setState({toDashboard:true})
+    this.setState({ toDashboard: true })
     // if (this.state.toDashboard) {
     //   return <Redirect to={{ pathname: "/admin/" }} />
     // }
   }
 
   schedule = () => {
-    this.setState({toSchedule:true})
+    this.setState({ toSchedule: true })
   }
 
   buses = () => {
-    this.setState({toBuses:true})
+    this.setState({ toBuses: true })
   }
 
   bookings = () => {
-    this.setState({toBookings:true})
+    this.setState({ toBookings: true })
   }
 
+  logout = () => {
+    localStorage.removeItem('token')
+    this.setState({toLogin:true})
+  }
 
   ButtonAppBar() {
     let states = this.state
@@ -79,6 +87,7 @@ export default class Navigation extends Component {
               <Button onClick={this.schedule} style={{ color: "white" }}><i className="far fa-calendar-alt" style={{ fontSize: '30px' }} ></i>&nbsp;&nbsp;Schedule</Button>
               <Button onClick={this.buses} style={{ color: "white" }} ><i className="fas fa-bus-alt" style={{ fontSize: '30px' }}></i>&nbsp;&nbsp;Buses</Button>
               <Button onClick={this.bookings} style={{ color: "white" }}><i className="fas fa-clipboard-list" style={{ fontSize: '30px' }}></i>&nbsp;&nbsp;Bookings</Button>
+              <Button onClick={this.logout} style={{ color: "white"}}><i className="fas fa-sign-out-alt" style={{ fontSize: '30px' }}></i>&nbsp;&nbsp;Logout</Button>
             </ButtonGroup>
           </Toolbar>
         </AppBar>
